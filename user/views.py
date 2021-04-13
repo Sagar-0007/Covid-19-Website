@@ -13,7 +13,7 @@ import hashlib
 import smtplib
 from random import *
 from django.contrib.sessions.models import Session
-
+pass
 
 def home(request):
     product = Product.objects.filter(subcatid='5')
