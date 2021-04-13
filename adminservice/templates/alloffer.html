@@ -1,0 +1,82 @@
+{% include 'adminheader.html'%}
+{% load static %}
+<head>
+	<script src='https://kit.fontawesome.com/a076d05399.js' ></script>
+</head>
+<body>
+
+    <!-- /navbar -->
+
+
+	<div class="wrapper">
+		<div class="container">
+			<div class="row">
+				<div class="span3">
+					{% include 'sidemenu.html'%}<!--/.sidebar-->
+				</div><!--/.span3-->
+
+
+				<div class="span9">
+					<div class="content">
+                        <div class="module">
+							<div class="module-head">
+								<h3>DataTables</h3>
+							</div>
+							<div class="module-body table">
+								<table id="tbl2" cellpadding="10" cellspacing="0" border="1" class="datatable-1 table table-bordered table-striped	 display" width="100%">
+									<thead>
+										<tr>
+                                            <td class="sorting">Id</td>
+											<td class="sorting">OfferName</td>
+											<td class="sorting">ProductName</td>
+											<td class="sorting">StartDate</td>
+											<td class="sorting">EndDate</td>
+											<td class="sorting">Descount_Amt</td>
+											<td class="sorting">Description</td>
+                                            <td class="sorting">Edit</td>
+                                            <td class="sorting">Delete</td>
+										</tr>
+									</thead>
+									<tbody>
+                                    {% for i in form %}
+                                        <tr class="gradeA">
+											<td class="sorting">{{forloop.counter}}</td>
+											<td class="sorting">{{i.offername}}</td>
+											<td class="sorting">{{i.prodid.prodName}}</td>
+											<td class="sorting">{{i.startdate}}</td>
+											<td class="sorting">{{i.enddate}}</td>
+											<td class="sorting">{{i.discount_amt}}</td>
+											<td class="sorting">{{i.description}}</td>
+											<td class="sorting"><a href="offeredit/{{i.id}}" ><i class='fas fa-edit' style='font-size:24px; color:black;'></i></a></td>
+											<td class="sorting"><a href="deleteoffer/{{i.id}}"><i class='fas fa-trash' style='font-size:24px; color:black;'></i></a></td>
+										</tr>
+                                    {% endfor %}
+                                    </tbody>
+								</table>
+							</div>
+						</div><!--/.module-->
+
+					<br />
+
+					</div><!--/.content-->
+				</div><!--/.span9-->
+			</div>
+		</div><!--/.container-->
+	</div><!--/.wrapper-->
+
+	{% include 'adminfooter.html'%}
+
+	<script src="{% static 'scripts/jquery-1.9.1.min.js'%}"></script>
+	<script src="{% static 'scripts/jquery-ui-1.10.1.custom.min.js'%}"></script>
+	<script src="{% static 'bootstrap/js/bootstrap.min.js'%}"></script>
+	<script src="{% static 'scripts/datatables/jquery.dataTables.js'%}"></script>
+	<script>
+		$(document).ready(function() {
+			$('.datatable-1').dataTable();
+			$('.dataTables_paginate').addClass("btn-group datatable-pagination");
+			$('.dataTables_paginate > a').wrapInner('<span />');
+			$('.dataTables_paginate > a:first-child').append('<i class="icon-chevron-left shaded"></i>');
+			$('.dataTables_paginate > a:last-child').append('<i class="icon-chevron-right shaded"></i>');
+		} );
+	</script>
+</body>

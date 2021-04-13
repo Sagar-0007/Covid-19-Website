@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+.text-dark login_btn align-self-center {
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-grid;
+
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 5px 5px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .text-dark login_btn align-self-center {
+  background-color: #3e8e41;
+}
+</style>
+</head>
+<body>
+<header>
+        <div class="container">
+            <!-- top nav -->
+            <nav class="top_nav d-flex pt-3 pb-1">
+                <!-- logo -->
+                <h1>
+                    <a class="navbar-brand" href="{% url 'home' %}">CP
+                    </a>
+                </h1>
+                <!-- //logo -->
+                <div class="w3ls_right_nav ml-auto d-flex">
+                    <!-- search form -->
+                    <form class="nav-search form-inline my-0 form-control" action="{% url 'sanitizer' %}" method="post">
+                        {% csrf_token %}
+                        <select class="form-control input-lg" name="category">
+                            <option value="all">Search our store</option>
+                            <optgroup label="Medical Supplies">
+                                <option value="sanitizer">Sanitizer</option>
+                                <option value="masks">Masks</option>
+                                <option value="med_cloth">Personal Protective Equipment Kit</option>
+                            </optgroup>
+                            <optgroup label="Medical Equipments">
+                                <option value="Dresses">Pulse Oximeter</option>
+                                <option value="T-shirts">Blood Pressure </option>
+                                <option value="skirts">Infrared Thermometer</option>
+                            </optgroup>
+                            <optgroup label="Medicine">
+                                <option value="Dresses">Dresses</option>
+                                <option value="T-shirts">T-shirts</option>
+                                <option value="skirts">Skirts</option>
+                            </optgroup>
+                        </select>
+                        <input class="btn btn-outline-secondary  ml-3 my-sm-0" type="submit" value="Search">
+                    </form>
+                    <!-- search form -->
+                    <div class="nav-icon d-flex">
+                        <!-- sigin and sign up -->
+                        <a class="text-dark login_btn align-self-center mx-3" href="{% static '#myModal_btn' %}" data-toggle="modal" data-target="#myModal_btn">
+                            <i class="far fa-user"></i>
+                        </a>
+                        <a class="text-dark login_btn align-self-center" data-toggle="modal" >
+                            <div class="dropdown">
+                            <i class="fas fa-caret-down"></i>
+                                <div class="dropdown-content">
+
+                                {% if 'is_login' in request.session %}
+                                    <a class="dropdown-item" href="show_profile"> <i class="fas fa-user" style="font-size: 1rem;"></i>  Your Profile </a>
+                                    <a class="dropdown-item" href="customer_order"> <i class="fab fa-first-order" style="font-size: 1rem;"></i>  Your Order </a>
+                                    <a class="dropdown-item" href="{% url 'user_logout'%}"> <i class="fas fa-sign-out-alt" style="font-size: 1rem;"></i>  Logout </a>
+                                {% endif %}
+                                </div>
+                            </div>
+                        </a>
+                        <!-- sigin and sign up -->
+                        <!-- shopping cart -->
+
+                        <div class="cart-mainf">
+                            <div class="hubcart hubcart2 cart cart box_1 mx-3">
+                                <form action="cart" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="cmd" value="cart">
+                                    <input type="hidden" name="display" value="1">
+                                    <button class="btn top_hub_cart mt-1" type="submit" name="submit" value="cart" title="Cart">
+                                        <i class="fas fa-shopping-bag"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- //shopping cart ends here -->
+                    </div>
+                </div>
+            </nav>
+            <!-- //top nav -->
+            <!-- bottom nav -->
+            <nav class="navbar navbar-expand-lg navbar-light justify-content-center">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mx-auto text-center">
+                        <li class="nav-item">
+                            <a class="nav-link  active" href="{% url 'home' %}">Home
+                                <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown has-mega-menu">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Medical Supplies</a>
+                            <div class="dropdown-menu" >
+                                <div class="container">
+                                    <div class="row w3_kids  py-14">
+                                        <div class="col-md-14">
+                                            <span><b>SHOP BY CATEGORY</b></span>
+                                            <a class="dropdown-item" href="{% url 'masks' %}">Masks</a>
+                                            <a class="dropdown-item" href="{% url 'sanitizer' %}">Sanitizers</a>
+                                            <a class="dropdown-item" href="{% url 'med_cloth' %}">Personal Protective Equipment Kit</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <li class="nav-item dropdown has-mega-menu" >
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Medical Equipments</a>
+                            <div class="dropdown-menu" >
+                                <div class="container">
+                                    <div class="row w3_kids  py-15">
+                                        <div class="col-md-15">
+                                            <span><b>SHOP BY CATEGORY</b></span>
+                                            <a class="dropdown-item" href="{% url 'pulse_oximeter' %}">Pulse Oximeter</a>
+                                            <a class="dropdown-item" href="{% url 'infrared_thermometer' %}">Infrared Thermometer</a>
+                                            <a class="dropdown-item" href="{% url 'blood_pressure' %}">Blood Pressure </a>
+                                        </div>
+                                        <div class="col-md-3">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown has-mega-menu">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Medicines</a>
+                            <div class="dropdown-menu" >
+                                <div class="container">
+                                    <div class="row w3_kids  py-50">
+                                        <div class="col-md-50">
+                                            <span><b>SHOP BY CATEGORY</b></span>
+                                            <a class="dropdown-item" href="{% url 'covid_medicine' %}">Covid-19 Medicines</a>
+                                        </div>
+                                        <div class="col-md-3">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'contact' %} ">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <!-- //bottom nav -->
+        </div>
+        <!-- //header container -->
+
+
+</header>
+</body>
+</html>

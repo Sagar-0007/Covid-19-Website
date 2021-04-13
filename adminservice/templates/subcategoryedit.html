@@ -1,0 +1,79 @@
+{% include 'adminheader.html'%}
+{% load static %}
+
+<body>
+
+
+
+
+	<div class="wrapper">
+		<div class="container">
+			<div class="row">
+				<div class="span3">
+                {% include 'sidemenu.html'%}
+				</div><!--/.span3-->
+
+
+				<div class="span9">
+					<div class="content">
+
+						<div class="module">
+							<div class="module-head">
+								<h3>Forms</h3>
+							</div>
+							<div class="module-body">
+                                <form class="form-horizontal row-fluid" method="post" action="/updatesubcategory/{{form.id}}">
+										{% csrf_token %}
+										{% if messages %}
+										{% for i in messages%}
+										<script>
+											alert('{{i}}');
+										</script>
+										{% endfor %}
+										{% endif %}
+										<div class="control-group">
+											<label class="control-label" for="basicinput">Category Name</label>
+											<div class="controls">
+											<select name="cat" id="cat" >
+												{% for i in cat %}
+												{% if i.id == form.catid_id %}
+                        					<option value="{{ i.id }}" selected="selected">{{ i.name }}</option>
+                    						{% else %}
+                        					<option value="{{ i.id }}">{{ i.name }}</option>
+                    						{% endif %}
+												{% endfor %}
+
+  											</select>
+											</div>
+											<br>
+											<br>
+											<label class="control-label" for="basicinput">Name</label>
+											<div class="controls">
+												<input type="text" id="basicinput" name="subName" value="{{form.subName}}" placeholder="SubCategory Name ..." class="span8">
+											</div>
+										</div>
+
+										<div class="control-group">
+											<div class="controls">
+												<button type="submit" class="btn">Submit Form</button>
+											</div>
+										</div>
+									</form>
+							</div>
+						</div>
+
+
+
+					</div><!--/.content-->
+				</div><!--/.span9-->
+			</div>
+		</div><!--/.container-->
+	</div><!--/.wrapper-->
+
+	{% include 'adminfooter.html'%}
+
+	<script src="{% static 'scripts/jquery-1.9.1.min.js'%}" type="text/javascript"></script>
+	<script src="{% static 'scripts/jquery-ui-1.10.1.custom.min.js'%}" type="text/javascript"></script>
+	<script src="{% static 'bootstrap/js/bootstrap.min.js'%}" type="text/javascript"></script>
+	<script src="{% static 'scripts/flot/jquery.flot.js'%}" type="text/javascript"></script>
+</body>

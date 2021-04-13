@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <title>OTP</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="{% static 'Login/images/icons/favicon.ico' %}" />
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'Login/vendor/bootstrap/css/bootstrap.min.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css"
+        href="{% static 'Login/fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'Login/fonts/Linearicons-Free-v1.0.0/icon-font.min.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'Login/vendor/animate/animate.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'Login/vendor/css-hamburgers/hamburgers.min.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'Login/vendor/animsition/css/animsition.min.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'Login/vendor/select2/select2.min.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'Login/vendor/daterangepicker/daterangepicker.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'Login/css/util.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'Login/css/main.css' %}">
+    <!--===============================================================================================-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <style>
+        .txt1:hover {
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: #e71515b9;
+            transition: 0.3s;
+        }
+
+        label {
+            display: block;
+            margin: 0;
+            color: #a29797;
+            font-size: 15px;
+        }
+
+        .resend{
+            padding: 7px;
+            margin-bottom: 3px;
+            background-color: white;
+            color: black;
+            border: 2px solid crimson;
+        }
+        .resend:hover{
+            background-color: crimson;
+            transition: 0.3s;
+            border: 2px solid crimson;
+        }
+    </style>
+</head>
+
+<body>
+    {% if msg %}
+    <script>
+        Swal.fire(
+            '',
+            '{{msg}}',
+            'error',
+        )
+    </script>
+    {% endif %}
+    <div class="limiter">
+        <div class="container-login100">
+            <div class="wrap-login100">
+                <div class="login100-form-title" style="background-image: url(../static/images/photo7.jpeg);">
+                    <span class="login100-form-title-1">
+                        OTP  Verification
+                    </span>
+                </div>
+
+                <form class="login100-form validate-form" action="{% url 'admin_otp' %}" method="POST">
+                    {% csrf_token %}
+
+                    <div class="wrap-input100 validate-input m-b-18" data-validate="Password is required">
+                        <span class="label-input100">Enter OTP</span>
+                        <input class="input60" type="txt" name="cotp" placeholder="Your OTP">
+                        <span class="focus-input100"></span>
+                        <a class="btn btn-info float-right resend" href="" role="button">Resend OTP</a>
+                        <input type="hidden" name="otp" value="{{otp}}">
+                        <input type="hidden" name="email" value="{{email}}">
+                    </div>
+                    <button class="login100-form-btn btn-lg float-right">
+                        Submit
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--===============================================================================================-->
+    <script src="{% static 'Login/vendor/jquery/jquery-3.2.1.min.js' %} "></script>
+    <!--===============================================================================================-->
+    <script src="{% static 'Login/vendor/animsition/js/animsition.min.js' %}"></script>
+    <!--===============================================================================================-->
+    <script src="{% static 'Login/vendor/bootstrap/js/popper.js' %}"></script>
+    <script src="{% static 'Login/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+    <!--===============================================================================================-->
+    <script src="{% static 'Login/endor/select2/select2.min.js' %}"></script>
+    <!--===============================================================================================-->
+    <script src="{% static 'Login/vendor/daterangepicker/moment.min.js' %}"></script>
+    <script src="{% static 'Login/vendor/daterangepicker/daterangepicker.js' %}"></script>
+    <!--===============================================================================================-->
+    <script src="{% static 'Login/vendor/countdowntime/countdowntime.js' %}"></script>
+    <!--===============================================================================================-->
+    <script src="{% static 'Login/js/main.js' %}"></script>
+
+</body>
+
+</html>

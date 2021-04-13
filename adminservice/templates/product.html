@@ -1,0 +1,140 @@
+
+{% include 'adminheader.html'%}
+{% load static %}
+
+<body>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+
+
+
+
+	<div class="wrapper">
+		<div class="container">
+			<div class="row">
+				<div class="span3">
+                {% include 'sidemenu.html'%}
+				</div><!--/.span3-->
+
+
+				<div class="span9">
+					<div class="content">
+
+						<div class="module">
+							<div class="module-head">
+								<h3>Product</h3>
+							</div>
+							<div class="module-body">
+
+
+
+
+
+									<form class="form-horizontal row-fluid" method="post" action="{% url 'product'%}" enctype="multipart/form-data">
+										{% csrf_token %}
+										{% if msg %}
+											<script>
+												Swal.fire(
+													'',
+													'{{msg}}',
+													'success',
+												)
+											</script>
+										{% endif %}
+										<div class="control-group" >
+											<label class="control-label" for="basicinput">Category Name</label>
+											<div class="controls">
+											<select name="cat" id="cat" >
+    											<option value="">Select Category</option>
+												{% for i in cat %}
+												<option name="cat" value="{{i.id}}">{{i.name}}</option>
+												{% endfor %}
+
+  											</select>
+											</div>
+											<br>
+											<br>
+											<div class="control-group">
+											<label class="control-label" for="basicinput">SubCategory Name</label>
+											<div class="controls">
+											<select name="subcat" id="subcat" >
+    											<option value="">Select SubCategory</option>
+												{% for i in subcat %}
+												<option name="subcat" value="{{i.id}}">{{i.subName}}</option>
+												{% endfor %}
+
+  											</select>
+											</div>
+											<br>
+											<br>
+											<label class="control-label" for="basicinput">Product Name</label>
+											<div class="controls">
+												<input type="text" id="basicinput" name="prodName" placeholder="Product Name ..." class="span8">
+
+											</div>
+												<br>
+												<br>
+												<label class="control-label" for="basicinput">Product Description</label>
+											<div class="controls">
+												<input type="text" id="description" name="prodDescription" placeholder="Product Description ..." class="span8">
+
+											</div>
+												<br>
+												<br>
+												<label class="control-label" for="basicinput">Product Stock</label>
+											<div class="controls">
+												<input type="radio"  id="rdo1" name="stock" value="Instock"> Instock
+												<input type="radio"  id="rdo2" name="stock" value="Outstock"> Outstock
+											</div>
+												<br>
+												<br>
+												<label class="control-label" for="basicinput">Product Image</label>
+											<div class="controls">
+												<input type="file" id="prodImg" name="prodImg" placeholder="Product Image ..." class="span8">
+
+											</div>
+												<br>
+												<br>
+												<label class="control-label" for="basicinput">Product Description</label>
+											<div class="controls">
+												<input type="text" id="prodPrice" name="prodPrice" placeholder="Product Price ..." class="span8">
+<br><br>
+
+											</div>
+												<br>
+												<br>
+												<label class="control-label" for="basicinput">Product Quantity</label>
+											<div class="controls">
+												<input type="text" id="prod_quantity" name="prod_quantity" placeholder="Product Quantity ..." class="span8">
+
+											</div>
+												<br>
+												<br>
+
+											</div>
+										</div>
+
+										<div class="control-group">
+											<div class="controls">
+												<button type="submit" class="btn">Submit Form</button>
+											</div>
+										</div>
+									</form>
+							</div>
+						</div>
+
+
+
+					</div><!--/.content-->
+				</div><!--/.span9-->
+			</div>
+		</div><!--/.container-->
+	</div><!--/.wrapper-->
+
+	{% include 'adminfooter.html'%}
+
+	<script src="{% static 'scripts/jquery-1.9.1.min.js'%}" type="text/javascript"></script>
+	<script src="{% static 'scripts/jquery-ui-1.10.1.custom.min.js'%}" type="text/javascript"></script>
+	<script src="{% static 'bootstrap/js/bootstrap.min.js'%}" type="text/javascript"></script>
+	<script src="{% static 'scripts/flot/jquery.flot.js'%}" type="text/javascript"></script>
+</body>

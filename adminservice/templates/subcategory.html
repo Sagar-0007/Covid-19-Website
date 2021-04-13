@@ -1,0 +1,86 @@
+{% include 'adminheader.html'%}
+{% load static %}
+<body>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+
+	<div class="wrapper">
+		<div class="container">
+			<div class="row">
+				<div class="span3">
+                {% include 'sidemenu.html'%}
+				</div><!--/.span3-->
+
+
+				<div class="span9">
+					<div class="content">
+
+						<div class="module">
+							<div class="module-head">
+								<h3>Sub-Category</h3>
+							</div>
+							<div class="module-body">
+
+
+
+
+
+									<form class="form-horizontal row-fluid" method="post" action="{% url 'subcategory'%}">
+										{% csrf_token %}
+										{% if msg %}
+										{% for i in msg %}
+
+    <script>
+        Swal.fire(
+            '',
+            '{{msg}}',
+            'success',
+        )
+    </script>
+
+										{% endfor %}
+										{% endif %}
+										<div class="control-group">
+											<label class="control-label" for="basicinput">Category Name</label>
+											<div class="controls">
+											<select name="catid" id="catid" >
+    											<option value="">Select Category</option>
+												{% for i in cat%}
+												<option name="cat" value="{{i.id}}">{{i.name}}</option>
+												{% endfor %}
+
+  											</select>
+											</div>
+											<br>
+											<br>
+											<label class="control-label" for="basicinput">SubCategoryName</label>
+											<div class="controls">
+												<input type="text" id="basicinput" name="subName" placeholder="SubCategory Name ..." class="span8">
+
+											</div>
+										</div>
+
+										<div class="control-group">
+											<div class="controls">
+												<button type="submit" class="btn">Submit Form</button>
+											</div>
+										</div>
+									</form>
+							</div>
+						</div>
+
+
+
+					</div><!--/.content-->
+				</div><!--/.span9-->
+			</div>
+		</div><!--/.container-->
+	</div><!--/.wrapper-->
+
+	{% include 'adminfooter.html'%}
+
+	<script src="{% static 'scripts/jquery-1.9.1.min.js'%}" type="text/javascript"></script>
+	<script src="{% static 'scripts/jquery-ui-1.10.1.custom.min.js'%}" type="text/javascript"></script>
+	<script src="{% static 'bootstrap/js/bootstrap.min.js'%}" type="text/javascript"></script>
+	<script src="{% static 'scripts/flot/jquery.flot.js'%}" type="text/javascript"></script>
+</body>
