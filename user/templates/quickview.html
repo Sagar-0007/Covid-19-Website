@@ -191,35 +191,26 @@ if(typeof _bsa !== 'undefined' && _bsa) {
                         <h5>Description</h5>
                         <p>{{data.prodDescription}}</p>
                     </div>
-                  <div class="d-sm-flex justify-content-between">
+                   <div class="d-sm-flex justify-content-between">
                         <div class="occasional">
-                            <h5 class="sp_title mb-3">Highlights</h5>
-                            <ul class="single_specific">
-                                <li>
-                                    <span>Fabric</span> Net</li>
-                                <li>
-                                    <span>Color :</span> Blue</li>
-                                <li>
-                                    <span>Type :</span> Gown</li>
-                                <li>
-                                    Maxi/Full Length Dress
-                            </ul>
+                            <h3 class="sp_title mb-3">Quantity : {{data.prod_quantity}}</h3>
 
                         </div>
-                        <div class="color-quality mt-sm-0 mt-4">
-                            <h5 class="sp_title mb-3">services</h5>
-                            <ul class="single_serv">
-                                <li>
-                                    <a href="#">30 Day Return Policy</a>
-                                </li>
-                                <li class="mt-2">
-                                    <a href="#">Cash on Delivery available</a>
-                                </li>
-                            </ul>
-                        </div>
                     </div>
-                    <br>
-                     <br>
+                     <div class="description">
+                        <h5>Feedback Form</h5>
+                        <form action="user_feedback/{{data.id}}/" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="user_id" value="{{request.session.user_id}}">
+                            <input type="hidden" name="data" value="{{data.id}}">
+                            <input type="text" name="feedback_message" placeholder="Enter Messages.." required>
+
+                            <input type="submit" value="submit">
+                        </form>
+                    </div>
+
+
+
                       <div class="occasion-cart">
                         <div class="chr single-item single_page_b">
                             <form action="{% url 'cart_add' data.id %}" method="post" enctype="multipart/form-data">

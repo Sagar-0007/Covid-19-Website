@@ -54,6 +54,7 @@ def login(request):
         pw = request.POST['Password']
         pwd = hashlib.md5(pw.encode())
         password = pwd.hexdigest()
+
         count = User_register.objects.filter(email=email, password=password).count()
         if count > 0:
             request.session['is_login'] = True
@@ -63,6 +64,7 @@ def login(request):
             #print(id)
             # user_id = request.session.get('user_id')
             # print(user_id)
+
 
             return redirect('home')
         else:
@@ -207,7 +209,7 @@ def cart_add(request, id):
             total_amt = int(existsing_quantity) * int(per_pro_price)
             print('total_amt:', total_amt)
             Cart.objects.filter(prodid=id, userid=user_id).update(quantity=existsing_quantity,price=total_amt)
-            return redirect('cart')
+            return redirect('home')
 
         #request.session['cart'] = dict(id=id, quantity=quantity)
         obj = Cart(name=name,image=image,price=price,quantity=1)
@@ -284,7 +286,7 @@ def cart_clear(request,id):
     return redirect('cart')
 
 
-
+"""
 def addressdetail(request):
     id = request.session.get('user_id')
     user = Billaddress.objects.get(id=id)
@@ -302,6 +304,7 @@ def addressdetail(request):
         obj.save()
         return redirect('make_payment')
     return render(request, 'addressdetail.html', {'user': user})
+"""
 
 def make_payment(request):
     id = request.session.get('user_id')
@@ -353,6 +356,7 @@ def customer_order(request):
 def customer_order_detail(request,id):
     #userid = request.session.get('user_id')
     order_product = Order.objects.get(id=id)
+    print(order_product)
     return render(request,'customer_order_detail.html',{'order_product':order_product})
 
 
@@ -379,25 +383,38 @@ def cart(request):
     return render(request,'cart.html',{'cart':cart})
 
 def addressdetail(request):
+
     total = request.POST['total']
     print("---------------t")
     print(total)
     id = request.session.get('user_id')
     user = User_register.objects.get(id=id)
-    """if request.POST:
-        mobile = request.POST['mobile']
-        pincode = request.POST['pincode']
-        address = request.POST['address']
-        name = request.POST['name']
-        city = request.POST['city']
-        state = request.POST['state']
-        user_id = request.session['user_id']
-        print(user_id)
-        obj = Billaddress(mobile=mobile,pincode=pincode,address=address,name=name,city=city,state=state)
-        obj.userid_id = user_id
-        obj.save()
-        return redirect('make_payment')"""
+    cart_obj_list = Cart.objects.filter(userid=id)
+    print('cart id:', id)
+    for cart_obj in cart_obj_list:
+        order = Order(name=cart_obj.name, price=cart_obj.price, quantity=cart_obj.quantity,
+                      prodid=cart_obj.prodid, userid=cart_obj.userid,
+                      image=cart_obj.image, Payment_status='success',
+                      Payment_mode='debit card',
+                      Success_mode='success')
+        order.save()
+        request.session['o_id']=order.id
+        product_id_new = int(str(cart_obj.prodid).split('(')[1].replace(')', ''))
+        print('prodid :', product_id_new)
+        existsing_quantity = Product.objects.filter(id=product_id_new).values_list('prod_quantity')[0][0]
+        print('existsing_quantity', existsing_quantity)
+        new_quantity = int(existsing_quantity) - int(cart_obj.quantity)
+        product = Product.objects.filter(id=product_id_new).update(prod_quantity=new_quantity)
+        print('cart id :', cart_obj.id)
+        remove_cart = Cart.objects.get(id=cart_obj.id)
+        remove_cart.delete()
+
+
+        # print('cart_quantity :',cart_obj.quantity, cart_obj.name)
+
     return render(request,'addressdetail.html',{'user':user,'total':total})
+
+
 
 
 def checkout(request):
@@ -419,15 +436,7 @@ def checkout(request):
     total = sub_total + 40
     print("---------------------")
     print(total)
-    # amount = total*100
-
-    # if request.method == "POST":
-    #     name = request.POST.get('name')
-    #     amount = total
-    #     client = razorpay.Client(auth=('rzp_test_UtV7JVYk3ROncb','cgjsHRXA0c7HCFzyDfrZoel4'))
-    #     payment = client.order.create({'amount': amount*100, 'currency': 'INR',
-    #                                    'payment_capture': '1',
-    #                                    })
+    request.session['t1'] = total
     client = razorpay.Client(auth=('rzp_test_DoGs52oAjmnP1r', 'qOoywFtCDm8htA6eUBO9cJO8'))
     payment = client.order.create({'amount': total * 100, 'currency': 'INR', 'payment_capture': '1', })
 
@@ -447,6 +456,26 @@ def payment(request):
 def quickview(request,id):
     data = Product.objects.get(id=id)
     return render(request,'quickview.html',{'data':data})
+
+def user_feedback(request,id):
+    data = Product.objects.get(id=id)
+    print('prod id :', data)
+    id = request.session.get('user_id')
+    user = User_register.objects.get(id=id)
+    print('user id:', user)
+    if request.POST:
+        feedback_message = request.POST['feedback_message']
+        user_id = request.session['user_id']
+        print(user_id)
+        prod_id = request.POST['data']
+        print('product id:', prod_id)
+        obj = User_feedback(feedback_message=feedback_message)
+
+        obj.userid_id = user_id
+        obj.prodid_id = prod_id
+        obj.save()
+    return render(request,'quickview.html',{'data':data})
+
 
 
 def blog(request):
@@ -496,6 +525,26 @@ def covid_medicine(request):
     product = Product.objects.filter(subcatid='8')
     return render(request, 'covid_medicine.html', {'product': product})
 
+def Invoice(request):
+    user_id = request.session.get('user_id')
+    user = User_register.objects.get(id=user_id)
+    '''order = Order.objects.filter(id=userid)
+    product = Product.objects.all'''
+    order_data = Order.objects.filter(userid=user)
+    print('orderid id:', id)
+    print("----------")
+    order_id = request.session.get('o_id')
+    total = request.session.get('t1')
+    order = Order.objects.get(id=order_id)
+    print(total)
+    return render(request,"invoice.html",{'user':user,'order':order, 'total':total})
 
+'''def View_Invoice(request):
+    user_id = request.session.get('user_id')
+    user = User_register.objects.get(id=user_id)
+    order_id = request.session.get('o_id')
+    order = Order.objects.get(id=order_id)
+    #product = Product_Order.objects.filter(Order_ID=order)
+    return render(request,"ecom/invoice.html",{'order':order,})'''
 
 

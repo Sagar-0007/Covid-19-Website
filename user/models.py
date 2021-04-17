@@ -1,5 +1,3 @@
-
-
 from django.db import models
 from django.utils import timezone
 
@@ -69,6 +67,11 @@ class Order(models.Model):
     Payment_mode = models.CharField(max_length=20)
     Success_mode = models.CharField(max_length=20)
 
+class User_feedback(models.Model):
+    userid = models.ForeignKey(User_register, on_delete=models.CASCADE)
+    prodid = models.ForeignKey(Product, on_delete=models.CASCADE)
+    Datetime_of_feedback = models.DateTimeField(default=timezone.now)
+    feedback_message = models.TextField(max_length=10000)
 
 
 

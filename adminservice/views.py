@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template import RequestContext
+from django.contrib.auth.hashers import make_password,check_password
 from random import *
 from django.core.mail import send_mail
 from user.models import *
@@ -23,22 +24,6 @@ def logout(request):
     return redirect('other_login')
 
 
-def other_login(request):
-    if request.session.get('Is_Login'):
-        return redirect('index')
-    if request.POST:
-        email = request.POST['email']
-        password = request.POST['password']
-        id = User.objects.filter(email=email,password=password).values_list('id')
-        if id:
-            request.session['Is_Login'] = True
-            request.session['id'] = id[0][0]
-            request.session['email'] = email
-            return redirect('index')
-        else:
-            messages.error(request,'Email and Password Is Incorrect.!')
-    return render(request,'other-login.html')
-
 
 def signup(request):
     if request.POST:
@@ -46,6 +31,7 @@ def signup(request):
         email = request.POST['email']
         password = request.POST['password']
         conformpassword=request.POST['conformpassword']
+
         if password == conformpassword:
             if User.objects.filter(email=email).exists():
                 messages.error(request,'Email is Alredy Exists! Please Login..')
@@ -56,6 +42,31 @@ def signup(request):
         else:
             messages.error(request,'Password And Conform Password Should Be Same.!')
     return render(request,'signup.html')
+
+def other_login(request):
+    if request.session.get('Is_Login'):
+        return redirect('index')
+    if request.POST:
+        email = request.POST['email']
+        password = request.POST['password']
+        is_exist = User.objects.filter(email=email)
+        if is_exist:
+            Userr = User.objects.get(email=email)
+            print(check_password(password, Userr.password))
+
+        id = User.objects.filter(email=email,password=password).values_list('id')
+
+        if id:
+            request.session['Is_Login'] = True
+            request.session['id'] = id[0][0]
+            request.session['email'] = email
+
+            return redirect('index')
+
+        else:
+            messages.error(request,'Email and Password Is Incorrect.!')
+    return render(request,'other-login.html')
+
 
 
 def getmail(request):
@@ -385,6 +396,11 @@ def all_order(request):
     print('order_product :', order_product)
     return render(request,'all_order.html',{'order_product':order_product})
 
+def user_register_data(request):
+    user = User_register.objects.all()
+    return render(request,'user_register_data.html',{'user':user})
+
+
 def user_view(request,id):
     user = Order.objects.get(id=id)
     return render(request,'order_view.html',{'user':user})
@@ -397,3 +413,14 @@ def deleteoffer(request,id):
 def user_feedback(request):
     user = Contact.objects.all()
     return render(request,'feedback.html',{'user':user})
+
+def product_feedback(request):
+    user = User_feedback.objects.all()
+    return render(request,'product_feedback.html',{'user':user})
+
+
+def delete_feedback(request,id):
+    user = User_feedback.objects.get(id=id)
+    user.delete()
+    return redirect('product_feedback')
+

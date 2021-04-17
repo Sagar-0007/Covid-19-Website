@@ -45,7 +45,7 @@ table.timetable_sub {
 .timetable_sub th,
 .timetable_sub td {
 	text-align: center;
-	padding: 4px;
+	padding: 17px;
 	font-size: 17px;
 	color: #212121;
 }
@@ -544,8 +544,8 @@ select.form-control.option-fieldf {
 
 .btn-primary {
 	color: #fff;
-	background-color: #84c639;
-	border-color: #84c639;
+	background-color: #228B22;
+	border-color: #228B22;
 	border-radius: 0;
 }
 

@@ -130,7 +130,7 @@ if(typeof _bsa !== 'undefined' && _bsa) {
                                             <div class="card_number_grid_left">
                                                 <div class="controls">
                                                     <label class="control-label">Name:</label>
-                                                    <input class="form-control" type="text" name="name" placeholder="Name">
+                                                    <input class="form-control" type="text" name="name" placeholder="Name" >
                                                 </div>
                                             </div>
                                             <div class="card_number_grid_left">
@@ -174,21 +174,21 @@ if(typeof _bsa !== 'undefined' && _bsa) {
                                             <div class="clear"> </div>
                                         </div>
                                         </div>
-                                    <!----- <button class="submit check_out">Pay Now</button> ----->
+                                    <!----- rzp_test_DoGs52oAjmnP1r <button class="submit check_out">Pay Now</button> ----->
 
                                 </div>
                             </div>
                         </form>
                         <center>
-                            <p>Rs {{total}}</p>
+
       <div style="padding-top: 20px;">
-        <form action="{% url 'thankpage' %}" method="POST">
+        <form action="{% url 'Invoice'%}" method="POST">
           {% csrf_token %}
           <script src="https://checkout.razorpay.com/v1/checkout.js"
           data-key="rzp_test_DoGs52oAjmnP1r"
           data-amount="{% widthratio total 1 100 %}"
           data-currency="INR" data-order_id="{{payment.id}}"
-          data-description="Easy To reuse Scrap"
+          data-description="Covid-19 Products"
           data-prefill.name="{{user.username}}"
           data-prefill.email="{{user.email}}"
           data-theme.color="#528FF0"

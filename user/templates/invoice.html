@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<!-- Mirrored from demo.harnishdesign.net/html/koice/index-invoice-flights.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 02 Mar 2021 15:34:55 GMT -->
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="http://demo.harnishdesign.net/html/koice/images/favicon.png" rel="icon" />
+<title>Invoice</title>
+<meta name="author" content="harnishdesign.net">
+
+<!-- Web Fonts
+======================= -->
+ <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900' type='text/css'>
+
+
+<link rel="stylesheet" type="text/css" href="http://demo.harnishdesign.net/html/koice/vendor/bootstrap/css/bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="http://demo.harnishdesign.net/html/koice/vendor/font-awesome/css/all.min.css"/>
+<link rel="stylesheet" type="text/css" href="http://demo.harnishdesign.net/html/koice/css/stylesheet.css"/>
+</head>
+<body>
+
+<!-- Container -->
+<div class="container-fluid invoice-container">
+  <!-- Header -->
+  <header>
+    <div class="row align-items-center">
+      <div class="col-sm-7 text-center text-sm-left mb-3 mb-sm-0"> <img id="logo" src="{% static 'images/logo.jpg' %}" style="height: 80px;" title="Koice" alt="Koice" /> </div>
+      <div class="col-sm-5 text-center text-sm-right">
+        <h4 class="mb-0">Invoice</h4>
+
+      </div>
+    </div>
+    <hr>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <div class="row">
+      <div class="col-sm-6 text-sm-right order-sm-1"> <strong>Pay To:</strong>
+        <address>
+        Covid-19 Products<br />
+        2122  Enterprise<br />
+        India 380007
+        </address>
+      </div>
+
+      <div class="col-sm-6 order-sm-0" > <strong>Invoiced To:</strong>
+
+        <address>
+
+          {{user.username}}<br />
+
+        </address>
+
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="col-sm-6 mb-3">  </div>
+
+      <div class="col-sm-6 mb-3 text-sm-right"> <strong>Booking Date:</strong><br>
+        <span>{{order.Datetime_of_payment}}</span> </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"> <span class="font-weight-600 text-4">Order Summary</span> </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+
+              <tr>
+                <td class="col-6 border-top-0"><strong>Description</strong></td>
+                <td class="col-2 text-center border-top-0"><strong>Price</strong></td>
+                <td class="col-2 text-center border-top-0"><strong>Quantity</strong></td>
+                <td class="col-2 text-right border-top-0"><strong>Total Price</strong></td>
+              </tr>
+            </thead>
+            <tbody>
+
+
+
+              <tr>
+                <td class="text-3"><span class="font-weight-500">{{order.prodid.prodName}}</span></td>
+                <td class="text-center">{{order.prodid.prodPrice}}Rs.</td>
+                <td class="text-center">{{order.quantity}}</td>
+                <td class="text-right">{{order.price}}Rs.</td>
+              </tr>
+              <tr>
+
+
+              <tr>
+                <td colspan="2" class="bg-light-2 text-right"><strong>Sub Total</strong></td>
+              <td colspan="2" class="bg-light-2 text-right">{{order.price}} Rs.</td>
+              </tr>
+              <tr>
+                <td colspan="2" class="bg-light-2 text-right"><strong>Delivery charge:</strong><br>
+                  <span class="text-1">Express delivery</span></td>
+                <td colspan="2" class="bg-light-2 text-right">+40.0 Rs.</td>
+              </tr>
+              <tr>
+                <td colspan="2" class="bg-light-2 text-right"><strong>Total</strong></td>
+                <td colspan="2" class="bg-light-2 text-right">{{total}} Rs.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="table-responsive d-print-none">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <td class="text-center"><strong>Transaction Date</strong></td>
+            <td class="text-center"><strong>Gateway</strong></td>
+            <td class="text-center"><strong>Amount</strong></td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-center">{{order.Datetime_of_payment}}</td>
+            <td class="text-center">Razor Pay</td>
+            <td class="text-center">{{order.Total_Amount}} INR  </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+  <!-- Footer -->
+  <footer class="text-center">
+    <p class="text-1"><strong>NOTE :</strong> This is computer generated receipt and does not require physical signature.</p>
+
+  </footer>
+</div>
+<!-- Back to My Account Link -->
+<p class="text-center d-print-none"><a href="{% url 'home' %}">&laquo; Continue Shopping</a></p>
+</body>
+
+<!-- Mirrored from demo.harnishdesign.net/html/koice/index-invoice-flights.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 02 Mar 2021 15:34:55 GMT -->
+</html>

@@ -227,7 +227,7 @@ if(typeof _bsa !== 'undefined' && _bsa) {
         <input type="hidden" name="product_id" value="{{new_cart_item.Product_ID.id}}">
         {% endif %}
         <input type="hidden" name="product_quantity" value="{{item}}">
-        <input type="text" name="total" value="{{total}}">
+        <input type="hidden" name="total" value="{{total}}">
 
         {% if new_cart_item %}
         <input type="hidden" name="cart_id" value="{{new_cart_item.id}}">
@@ -239,7 +239,7 @@ if(typeof _bsa !== 'undefined' && _bsa) {
         {% if cust_cart %}
         <input type="hidden" name="all_Prod" value="">
 
-           <button class="submit">Place Order</button>
+           <button type="submit" class="btn btn-primary">Place Order</button>
 
 
         {% endif %}

@@ -105,11 +105,13 @@
                             <div class="hubcart hubcart2 cart cart box_1 mx-3">
                                 <form action="cart" method="post">
                                     {% csrf_token %}
+                                    {% if 'is_login' in request.session %}
                                     <input type="hidden" name="cmd" value="cart">
                                     <input type="hidden" name="display" value="1">
                                     <button class="btn top_hub_cart mt-1" type="submit" name="submit" value="cart" title="Cart">
                                         <i class="fas fa-shopping-bag"></i>
                                     </button>
+                                    {% endif %}
                                 </form>
                             </div>
                         </div>

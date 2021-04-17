@@ -45,6 +45,7 @@ urlpatterns = [
     path('contact', usersvs.contact, name='contact'),
     path('payment', usersvs.payment, name='payment'),
     path('quickview/<int:id>', usersvs.quickview, name='quickview'),
+    path('quickview/user_feedback/<int:id>/',usersvs.user_feedback,name='user_feedback'),
     path('addressdetail', usersvs.addressdetail, name='addressdetail'),
     path('checkout', usersvs.checkout, name='checkout'),
     path('cart', usersvs.cart, name='cart'),
@@ -60,6 +61,8 @@ urlpatterns = [
     path('infrared_thermometer', usersvs.infrared_thermometer, name='infrared_thermometer'),
     path('blood_pressure', usersvs.blood_pressure, name='blood_pressure'),
     path('covid_medicine', usersvs.covid_medicine, name='covid_medicine'),
+    path("Invoice",usersvs.Invoice,name="Invoice"),
+    #path("View_Invoice",usersvs.View_Invoice,name="View_Invoice"),
 
 
     # Adminservices Urls...
@@ -99,8 +102,12 @@ urlpatterns = [
     path('updateffer/<int:id>', adminsvs.updateoffer, name='updateoffer'),
     path('deleteoffer/<int:id>', adminsvs.deleteoffer, name='deleteoffer'),
     path('all_order',adminsvs.all_order,name='all_order'),
+    path('user_register_data',adminsvs.user_register_data,name='user_register_data'),
     path('user_view/<int:id>',adminsvs.user_view,name='user_view'),
     path('user_feedback',adminsvs.user_feedback,name='user_feedback'),
+    path('product_feedback',adminsvs.product_feedback,name='product_feedback'),
+    path('delete_feedback/<int:id>',adminsvs.delete_feedback,name='delete_feedback'),
+
 
 
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
