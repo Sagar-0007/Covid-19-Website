@@ -432,16 +432,22 @@ def checkout(request):
     for i in cust_cart:
         item = item + i.quantity
         sub_total = sub_total + i.price
+        request.session['t2'] = sub_total
     total = sub_total + 40
+    price = i.price
     print("---------------------")
     print(total)
+    sub = sub_total
     request.session['t1'] = total
+    request.session['t2'] = sub
+
+
     client = razorpay.Client(auth=('rzp_test_DoGs52oAjmnP1r', 'qOoywFtCDm8htA6eUBO9cJO8'))
     payment = client.order.create({'amount': total * 100, 'currency': 'INR', 'payment_capture': '1', })
 
     return render(request, "checkout.html",
                   {'user': user,  'cust_cart': cust_cart, 'item': item, 'sub_total': sub_total,
-                   'total': total, 'client':client, 'payment':payment,})
+                   'total': total, 'sub': sub, 'client':client, 'payment':payment,})
 
 
 def thankpage(request):
@@ -534,15 +540,19 @@ def Invoice(request):
     print("----------")
     order_id = request.session.get('o_id')
     total = request.session.get('t1')
+    sub = request.session.get('t2')
+
+
     #order = Order.objects.filter(id=order_id)
     print(total)
+    print(sub)
     orderdata=[]
     for order_data in order_id:
         order = Order.objects.get(id=order_data)
         orderdata.append(order)
         print('orderdata :',orderdata)
 
-    return render(request, "invoice.html", {'user':user,'order':orderdata,'total':total})
+    return render(request, "invoice.html", {'user':user,'order':orderdata,'total':total,'sub':sub})
 
 
 
@@ -551,6 +561,7 @@ def View_Invoice(request,id):
     user_id = request.session.get('user_id')
     user = User_register.objects.get(id=user_id)
     order = Order.objects.filter(id=id)
+
 
 
     return render(request,'viewinvoice.html',{'order':order,'user':user,})
