@@ -57,19 +57,10 @@
 							</div>
 							<div class="control-group">
 								<div class="controls row-fluid">
-									<input class="span12" type="text" id="email" name="email" placeholder="Email"  value = "{{i.email}}" required>
+									<input class="span12" type="text" id="email" name="email" pattern="[a-z]+[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="Invalid email address" placeholder="Email"  value = "{{i.email}}" required>
 								</div>
 							</div>
-							<div class="control-group">
-								<div class="controls row-fluid">
-									<input class="span12" type="password" id="contact" name="password" placeholder="Contact" value = "{{i.password}}" required>
-								</div>
-							</div>
-							<div class="control-group">
-								<div class="controls row-fluid">
-									<input class="span12" type="password" id="speciality" name="conformpassword" placeholder="Speciality" value = "{{i.password}}" required>
-								</div>
-							</div>
+
 							{% endfor %}
 							<br/>
 							<br/>

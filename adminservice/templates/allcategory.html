@@ -21,7 +21,7 @@
 					<div class="content">
                         <div class="module">
 							<div class="module-head">
-								<h3>DataTables</h3>
+								<h3>Manage Category</h3>
 							</div>
 							<div class="module-body table">
 								<table  id="tbl2" cellpadding="10" cellspacing="0" border="0" class="datatable-1 table table-bordered table-striped	 display" width="100%">
@@ -38,8 +38,8 @@
                                         <tr class="gradeA">
 											<td class="sorting">{{forloop.counter}}</td>
 											<td class="sorting">{{i.name}}</td>
-											<td class="sorting"><a href="categoryedit/{{i.id}}" ><i class='fas fa-edit' style='font-size:24px; color:black;'></i></a></td>
-											<td class="sorting"><a href="deletecategory/{{i.id}}" ><i class='fas fa-trash' style='font-size:24px; color:black;'></i></a></td>
+											<td class="sorting"><a href="categoryedit/{{i.id}}" ><img src="{% static 'images/edit_2.png' %}" style="height:25px; width:25px; "></a></td>
+											<td class="sorting"><a href="deletecategory/{{i.id}}" ><img src="{% static 'images/delete.png' %}" style="height:22px; width:22px; "></i></a></td>
 										</tr>
                                     {% endfor %}
                                     </tbody>

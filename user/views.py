@@ -1,3 +1,4 @@
+import uuid
 from django.core.mail import send_mail
 from django.http import HttpResponseRedirect
 from django.shortcuts import render,redirect, HttpResponse
@@ -29,6 +30,7 @@ def register(request):
     if request.POST:
         name = request.POST['Name']
         email = request.POST['Email']
+        Contact = request.POST['Contact']
         pw = request.POST['Password']
         pwd = hashlib.md5(pw.encode())
         password = pwd.hexdigest()
@@ -38,10 +40,10 @@ def register(request):
         confirmpassword = cpwd.hexdigest()
 
         if User_register.objects.filter(email=email).exists():
-            msg = 'Email Is Already Exists'
+            msg = 'Email Address Is Already Register !!!'
             return render(request,'home.html',{'msg':msg})
         else:
-            obj = User_register(username=name, email=email, password=password)
+            obj = User_register(username=name, email=email, user_contact=Contact, password=password)
             obj.save()
 
             return redirect('home')
@@ -68,7 +70,7 @@ def login(request):
 
             return redirect('home')
         else:
-            msg = 'Email OR Password Are Incorrect'
+            msg = 'Email or Password Are Incorrect !!!'
             return render(request, 'home.html', {'msg': msg})
 
     return render(request, 'home.html')
@@ -97,20 +99,25 @@ def updateProfile(request):
     if request.method == 'POST':
         name = request.POST['Name']
         email = request.POST['Email']
-        password = request.POST['Password']
-        confirmpassword = request.POST['Confirm_Password']
+        Contact = request.POST['Contact']
+
 
         if User_register.objects.filter(email=email).exists():
             messages.error(request, "Email Already Exist!! Please login")
         else:
-            User_register.objects.filter(id=id).update(username=name, email=email, password=password)
+            User_register.objects.filter(id=id).update(username=name, email=email, user_contact=Contact)
 
         messages.success(request,"Profile updated Successfully")
         return redirect('show_profile')
 
 def changePassword(request):
     id = request.session.get('user_id')
+
     if request.method == 'POST':
+        o = request.POST['olpd']
+        ol = hashlib.md5(o.encode())
+        old = ol.hexdigest()
+
         pw = request.POST['Password']
         pwd = hashlib.md5(pw.encode())
         password = pwd.hexdigest()
@@ -119,13 +126,14 @@ def changePassword(request):
         cpwd = hashlib.md5(cpw.encode())
         conf_password = cpwd.hexdigest()
 
-        if password == conf_password:
+        if User_register.objects.filter(password = old):
             User_register.objects.filter(id=id).update(password=password)
-            msg = "Password Updated Successfully"
-            return render(request,'show_profile.html',{'msg':msg})
+            return redirect('show_profile')
 
         else:
-            msg = "Password and confirm password should be same"
+            msg = "Old Password doesn't Match!"
+            return render(request, 'changePassword.html', {'msg': msg})
+
     return render(request,'changePassword.html')
 
 def forgotpassword(request):
@@ -198,7 +206,7 @@ def cart_add(request, id):
         print('user_id :',user_id)
         print('quantity :',quantity,id)
         if int(quantity) < 1:
-            messages.error(request,'product is not available')
+            messages.error(request,'No stock available')
         if Cart.objects.filter(prodid=id, userid=user_id).exists():
             existsing_quantity = Cart.objects.filter(prodid=id,userid=user_id).values_list('quantity')[0][0]
             print('existsing_quantity:',existsing_quantity)
@@ -209,7 +217,7 @@ def cart_add(request, id):
             total_amt = int(existsing_quantity) * int(per_pro_price)
             print('total_amt:', total_amt)
             Cart.objects.filter(prodid=id, userid=user_id).update(quantity=existsing_quantity,price=total_amt)
-            return redirect('home')
+            return redirect('cart')
 
         #request.session['cart'] = dict(id=id, quantity=quantity)
         obj = Cart(name=name,image=image,price=price,quantity=1)
@@ -217,7 +225,7 @@ def cart_add(request, id):
         obj.userid_id = user_id
         obj.save()
 
-    return redirect(reverse('cart'),{'product':product})
+    return redirect(reverse('home'),{'product':product})
 
 
 def item_clear(request, id):
@@ -228,13 +236,6 @@ def item_clear(request, id):
 
 
 def item_increment(request, id):
-    #id = request.session.get("id")
-    #customer = User_register.objects.get(id=id)
-    #print('customer id:', customer)
-    #product = Product.objects.get(id=id)
-    #print('cartitems :',request.session['cart'])
-    #dictionary = request.session['cart']
-    #cart = Cart.objects.get(id)
     quantity = Cart.objects.filter(id=id).values_list('quantity')[0][0]
     print('quantity :',quantity)
     #cart = Cart.objects.get(id=id)
@@ -247,13 +248,6 @@ def item_increment(request, id):
     print('total_amt :',total_amt)
     Cart.objects.filter(id=id).update(quantity=quantity,price=total_amt)
 
-
-    #cart_i_up = int(dictionary['quantity']) + 1
-    #request.session['cart']['quantity'] = cart_i_up
-    #print('request session :',request.session['cart'])
-    #cart_i_down = int(dictionary['prodquantity']) - 1
-    #request.session['cart']['prodquantity'] = cart_i_down
-    #print('down session :',request.session['cart'])
     return HttpResponseRedirect(reverse('cart'))
 
 
@@ -383,22 +377,27 @@ def cart(request):
     return render(request,'cart.html',{'cart':cart})
 
 def addressdetail(request):
-
+    user_id = request.session['user_id']
+    print('user_id :', user_id)
     total = request.POST['total']
     print("---------------t")
     print(total)
     id = request.session.get('user_id')
     user = User_register.objects.get(id=id)
-    cart_obj_list = Cart.objects.filter(userid=id)
+    cart_obj_list = Cart.objects.filter(userid=user_id)
     print('cart id:', id)
+    request.session['o_id'] = []
     for cart_obj in cart_obj_list:
         order = Order(name=cart_obj.name, price=cart_obj.price, quantity=cart_obj.quantity,
                       prodid=cart_obj.prodid, userid=cart_obj.userid,
                       image=cart_obj.image, Payment_status='success',
                       Payment_mode='debit card',
                       Success_mode='success')
+
         order.save()
-        request.session['o_id']=order.id
+        request.session['o_id'].append(order.id)
+        # request.session['o_date'] = order.Datetime_of_payment
+
         product_id_new = int(str(cart_obj.prodid).split('(')[1].replace(')', ''))
         print('prodid :', product_id_new)
         existsing_quantity = Product.objects.filter(id=product_id_new).values_list('prod_quantity')[0][0]
@@ -409,10 +408,10 @@ def addressdetail(request):
         remove_cart = Cart.objects.get(id=cart_obj.id)
         remove_cart.delete()
 
-
         # print('cart_quantity :',cart_obj.quantity, cart_obj.name)
 
-    return render(request,'addressdetail.html',{'user':user,'total':total})
+
+    return render(request,'addressdetail.html',{'user':user,'total':total,})
 
 
 
@@ -442,7 +441,7 @@ def checkout(request):
 
     return render(request, "checkout.html",
                   {'user': user,  'cust_cart': cust_cart, 'item': item, 'sub_total': sub_total,
-                   'total': total, 'client':client, 'payment':payment})
+                   'total': total, 'client':client, 'payment':payment,})
 
 
 def thankpage(request):
@@ -531,20 +530,34 @@ def Invoice(request):
     '''order = Order.objects.filter(id=userid)
     product = Product.objects.all'''
     order_data = Order.objects.filter(userid=user)
-    print('orderid id:', id)
+    #print('orderid id:', id)
     print("----------")
     order_id = request.session.get('o_id')
     total = request.session.get('t1')
-    order = Order.objects.get(id=order_id)
+    #order = Order.objects.filter(id=order_id)
     print(total)
-    return render(request,"invoice.html",{'user':user,'order':order, 'total':total})
+    orderdata=[]
+    for order_data in order_id:
+        order = Order.objects.get(id=order_data)
+        orderdata.append(order)
+        print('orderdata :',orderdata)
 
-'''def View_Invoice(request):
+    return render(request, "invoice.html", {'user':user,'order':orderdata,'total':total})
+
+
+
+
+def View_Invoice(request,id):
     user_id = request.session.get('user_id')
     user = User_register.objects.get(id=user_id)
-    order_id = request.session.get('o_id')
-    order = Order.objects.get(id=order_id)
-    #product = Product_Order.objects.filter(Order_ID=order)
-    return render(request,"ecom/invoice.html",{'order':order,})'''
+    order = Order.objects.filter(id=id)
+
+
+    return render(request,'viewinvoice.html',{'order':order,'user':user,})
+
+
+
+
+
 
 

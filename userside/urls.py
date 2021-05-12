@@ -15,11 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from django.conf.urls import handler500
+
+from adminservice.views import Pdf, PdfOrder
 from user import views as usersvs
 from adminservice import views as adminsvs
-from django.conf import settings
 from django.conf.urls.static import static
+from django.conf import settings
 
 
 urlpatterns = [
@@ -31,6 +32,7 @@ urlpatterns = [
     path('user_logout', usersvs.user_logout, name='user_logout'),
     path('show_profile', usersvs.show_profile, name="show_profile"),
     path('editProfile', usersvs.editProfile, name="editProfile"),
+    path('updateProfile', usersvs.updateProfile, name="updateProfile"),
     path('customer_order', usersvs.customer_order, name="customer_order"),
     path('customer_order_detail/<int:id>', usersvs.customer_order_detail, name="customer_order_detail"),
     path('changePassword', usersvs.changePassword, name="changePassword"),
@@ -61,8 +63,10 @@ urlpatterns = [
     path('infrared_thermometer', usersvs.infrared_thermometer, name='infrared_thermometer'),
     path('blood_pressure', usersvs.blood_pressure, name='blood_pressure'),
     path('covid_medicine', usersvs.covid_medicine, name='covid_medicine'),
-    path("Invoice",usersvs.Invoice,name="Invoice"),
-    #path("View_Invoice",usersvs.View_Invoice,name="View_Invoice"),
+    path("Invoice", usersvs.Invoice, name="Invoice"),
+    path("view_Invoice/<int:id>", usersvs.View_Invoice, name="view_Invoice"),
+
+                  #path("View_Invoice",usersvs.View_Invoice,name="View_Invoice"),
 
 
     # Adminservices Urls...
@@ -102,11 +106,16 @@ urlpatterns = [
     path('updateffer/<int:id>', adminsvs.updateoffer, name='updateoffer'),
     path('deleteoffer/<int:id>', adminsvs.deleteoffer, name='deleteoffer'),
     path('all_order',adminsvs.all_order,name='all_order'),
+    path('delete_order/<int:id>', adminsvs.delete_order, name='delete_order'),
     path('user_register_data',adminsvs.user_register_data,name='user_register_data'),
     path('user_view/<int:id>',adminsvs.user_view,name='user_view'),
     path('user_feedback',adminsvs.user_feedback,name='user_feedback'),
     path('product_feedback',adminsvs.product_feedback,name='product_feedback'),
     path('delete_feedback/<int:id>',adminsvs.delete_feedback,name='delete_feedback'),
+    path('user_report',adminsvs.user_report,name='user_report'),
+    path('render/pdf/', Pdf.as_view()),
+    path('order_report',adminsvs.order_report,name='order_report'),
+    path('render/orderpdf/', PdfOrder.as_view()),
 
 
 

@@ -22,15 +22,16 @@
 							<div class="module-head">
 								<h3>Users Tables</h3>
 							</div>
+							<br>
 							<div class="module-body table">
-								<table id="tbl2" cellpadding="10" cellspacing="0" border="1" class="datatable-1 table table-bordered table-striped	 display" width="100%">
+								<table id="tbl2" cellpadding="10" cellspacing="0" border="1" class="datatable-1 table table-bordered table-striped	 display"  width="100%">
 									<thead>
 										<tr>
                                             <td class="sorting">Id</td>
 											<th class="sorting">User Name</th>
                                             <th class="sorting">User Email</th>
                                             <th class="sorting">Contact</th>
-                                            <th class="sorting">Register Date</th>
+
 
 										</tr>
 									</thead>
@@ -41,7 +42,7 @@
 											<td class="sorting">{{i.username}}</td>
                                             <td class="sorting">{{i.email}}</td>
                                             <td class="sorting">{{i.user_contact}}</td>
-                                            <td class="sorting">{{i.Datetime_of_Register}}</td>
+
 										</tr>
                                     {% endfor %}
                                     </tbody>

@@ -65,12 +65,12 @@
 							</div>
 							<div class="control-group">
 								<div class="controls row-fluid">
-									<input class="span12" type="text" id="email" name="email" placeholder="Email" required="required">
+									<input class="span12" type="text" id="email" name="email" required="" placeholder="Email" pattern="[a-z]+[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="Invalid email address"  >
 								</div>
 							</div>
                             <div class="control-group">
 								<div class="controls row-fluid">
-									<input class="span12" type="password" id="password" name="password" placeholder="Password" required="required">
+									<input class="span12" type="password" id="password" name="password" placeholder="Password" required="required"  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" >
 								</div>
 							</div>
                             <div class="control-group">
@@ -92,6 +92,22 @@
 			</div>
 		</div>
 	</div><!--/.wrapper-->
+	   <script>
+        window.onload = function () {
+            document.getElementById("password").onchange = validatePassword;
+            document.getElementById("conformpassword").onchange = validatePassword;
+        }
+
+        function validatePassword() {
+            var pass2 = document.getElementById("conformpassword").value;
+            var pass1 = document.getElementById("password").value;
+            if (pass1 != pass2)
+                document.getElementById("conformpassword").setCustomValidity("Passwords Don't Match");
+            else
+                document.getElementById("conformpassword").setCustomValidity('');
+            //empty string means no validation error
+        }
+    </script>
 
 	<div class="footer">
 		<div class="container">

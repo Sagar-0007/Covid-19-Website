@@ -30,8 +30,10 @@
 											<th class="sorting">Order Date</th>
                                             <th class="sorting">Total Amount</th>
                                             <th class="sorting">Payment </th>
+											<th class="sorting">User Name</th>
                                             <th class="sorting">View Detail</th>
-                                            <th class="sorting">User Name</th>
+
+
 
 										</tr>
 									</thead>
@@ -42,13 +44,15 @@
 											<td class="sorting">{{i.Datetime_of_payment}}</td>
 											<td class="sorting">Rs.{{i.price}}</td>
                                             <td><span class="badge badge-success" style="padding-top: 7px;padding-bottom: 7px;padding-right: 10px;padding-left: 10px;font-size: 14px;margin-top: 4px;margin-left: 18px;">Success</span>   </td>
+											<td class="sorting">{{i.userid.username}}</td>
 											<td>
                         					<a href="user_view/{{i.id}}">
-                          						<button type="submit" class="btn btn-primary" style="margin-left: 30px;" action="user_view/{{i.id}}"><i class="fa fa-eye" style="font-size:24px"></i></button>
+                          						<button type="submit" class="btn btn-primary" style="margin-left: 30px;" action="user_view/{{i.id}}"><img src="{% static 'images/vi.png' %}" style="height:25px; width:25px; "></button>
 											</a>
 											</td>
 
-                                            <td class="sorting">{{i.userid.username}}</td>
+
+
                                         </tr>
                                     {% endfor %}
                                     </tbody>

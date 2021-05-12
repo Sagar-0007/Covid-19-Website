@@ -22,7 +22,7 @@
 					<div class="content">
                         <div class="module">
 							<div class="module-head">
-								<h3>DataTables</h3>
+								<h3>Manage Product</h3>
 							</div>
 
 							<div class="module-body table tblnew">
@@ -36,7 +36,6 @@
                                             <td>ProductDescription</td>
 											<td>ProductQuantity</td>
                                             <td>ProductStock</td>
-
                                             <td>ProductImage</td>
                                             <td>ProductPrice</td>
 											<td>CategoryId</td>
@@ -54,13 +53,12 @@
                                             <td>{{i.prodDescription}}</td>
 											<td>{{i.prod_quantity}}</td>
                                             <td>{{i.stock}}</td>
-
                                             <td>{{i.prodImg}}</td>
                                             <td>{{i.prodPrice}}</td>
 											<td>{{i.catid.name}}</td>
 											<td>{{i.subcatid.subName}}</td>
-											<td><a href="productedit/{{i.id}}" ><i class='fas fa-edit' style='font-size:24px; color:black;'></i></a></td>
-											<td><a href="deleteprodut/{{i.id}}"><i class='fas fa-trash' style='font-size:24px; color:black;'></i></a></td>
+											<td><a href="productedit/{{i.id}}" ><img src="{% static 'images/edit_2.png' %}" style="height:25px; width:25px; "></a></td>
+											<td><a href="deleteprodut/{{i.id}}"><img src="{% static 'images/delete.png' %}" style="height:22px; width:22px; "></a></td>
 										</tr>
 
                                     {% endfor %}

@@ -8,6 +8,8 @@ class User_register(models.Model):
     username = models.CharField(max_length=100)
     email = models.EmailField()
     password = models.CharField(max_length=200)
+    user_contact = models.BigIntegerField()
+  #  Datetime_of_Register = models.DateTimeField(default=timezone.now)
 
 class Cart(models.Model):
     prodid = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -66,6 +68,10 @@ class Order(models.Model):
     Datetime_of_payment = models.DateTimeField(default=timezone.now)
     Payment_mode = models.CharField(max_length=20)
     Success_mode = models.CharField(max_length=20)
+    Invoice_No = models.BigIntegerField(default=0)
+    Razorpay_order_id = models.CharField(max_length=500, null=True, blank=True)
+    Razorpay_payment_id = models.CharField(max_length=500, null=True, blank=True)
+    razorpay_signature = models.CharField(max_length=500, null=True, blank=True)
 
 class User_feedback(models.Model):
     userid = models.ForeignKey(User_register, on_delete=models.CASCADE)

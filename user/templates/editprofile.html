@@ -63,32 +63,21 @@
                         <div class="col-md-6">
                             <form action="updateProfile" method="post">
                                 {% csrf_token %}
-                                      {% if messages %}
-                                {% for message in messages %}
-                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                                    <strong>Message: </strong> {{ message }}
-                                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                      </button>
-                                    </div>
-                                {% endfor %}
-                                {% endif %}
+
                                 <div class="form-group">
                                     <label for="recipient-name1" class="col-form-label">Your Name</label>
                                     <input type="text" class="form-control" placeholder=" " name="Name" id="recipient-name1" required="" value="{{user.username}}">
                                 </div>
                                 <div class="form-group">
                                     <label for="recipient-email" class="col-form-label">Email</label>
-                                    <input type="email" class="form-control" placeholder=" " name="Email" id="recipient-email" required="" value="{{user.email}}">
+                                    <input type="email" class="form-control" placeholder=" " name="Email" id="recipient-email" required="" value="{{user.email}}" pattern="[a-z]+[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="password1" class="col-form-label">Password</label>
-                                    <input type="password" class="form-control" placeholder=" " name="Password" id="password1" required="" value="{{user.password}}">
+                                    <label for="recipient-email" class="col-form-label">Contact</label>
+                                    <input type="text" class="form-control" placeholder=" " name="Contact" id="recipient-contact" required="" value="{{user.user_contact}}" pattern="[789][0-9]{9}" title="minimum,maximum 10 digit" required="required">
                                 </div>
-                                <div class="form-group">
-                                    <label for="password2" class="col-form-label">Confirm Password</label>
-                                    <input type="password" class="form-control" placeholder=" " name="Confirm_Password" id="password2" required="" value="{{user.password}}">
-                                </div>
+
+
                                 <div class="right-w3l">
                                     <input type="submit" class="form-control" value="Update Profile">
                                 </div>

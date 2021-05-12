@@ -2,6 +2,7 @@
 {% load static %}
 <head>
 	<script src='https://kit.fontawesome.com/a076d05399.js' ></script>
+
 </head>
 <body>
 
@@ -16,37 +17,43 @@
 				</div><!--/.span3-->
 
 
-
 				<div class="span9">
 					<div class="content">
                         <div class="module">
 							<div class="module-head">
-								<h3>Manage Sub-Category</h3>
+
+								<h3 style="text-align:center;">Users Report</h3>
 							</div>
-							<div class="module-body table">
-								<table id="tbl2" cellpadding="10" cellspacing="0" border="1" class="datatable-1 table table-bordered table-striped	 display" width="100%">
+
+								<table id="tbl2" cellpadding="10" cellspacing="0" border="1"  width="200%">
 									<thead>
 										<tr>
                                             <td class="sorting">Id</td>
-											<td class="sorting">SubCategoryName</td>
-											<td class="sorting">CategoryName</td>
-                                            <td class="sorting">Edit</td>
-                                            <td class="sorting">Delete</td>
+											<th class="sorting">User Name</th>
+                                            <th class="sorting">User Email</th>
+                                            <th class="sorting">Contact</th>
+
+
 										</tr>
 									</thead>
 									<tbody>
-                                    {% for i in form %}
+                                    {% for i in user %}
                                         <tr class="gradeA">
 											<td class="sorting">{{forloop.counter}}</td>
-											<td class="sorting">{{i.subName}}</td>
-											<td class="sorting">{{i.catid.name}}</td>
-											<td class="sorting"><a href="subcategoryedit/{{i.id}}" ><img src="{% static 'images/edit_2.png' %}" style="height:25px; width:25px; "></a></td>
-											<td class="sorting"><a href="deletesubcategory/{{i.id}}"><img src="{% static 'images/delete.png' %}" style="height:22px; width:22px; "></a></td>
+											<td class="sorting">{{i.username}}</td>
+                                            <td class="sorting">{{i.email}}</td>
+                                            <td class="sorting">{{i.user_contact}}</td>
 										</tr>
                                     {% endfor %}
                                     </tbody>
 								</table>
-							</div>
+							<br>
+							<br>
+								<div class="control-group">
+									<div class="controls">
+										<a href="/render/pdf/" type="submit" class="btn" >User PDF</a>
+									</div>
+								</div>
 						</div><!--/.module-->
 
 					<br />

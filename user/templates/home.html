@@ -753,7 +753,7 @@ if(typeof _bsa !== 'undefined' && _bsa) {
                             <form action="register" method="post">
                             {% csrf_token %}
                             {% if msg %}
-                             	{% ifequal msg 'Email Is Already Exists' %}
+                             	{% ifequal msg 'Email Address Is Already Register !!!' %}
                                 <script>
                                     Swal.fire(
                                         ",
@@ -778,7 +778,11 @@ if(typeof _bsa !== 'undefined' && _bsa) {
                                 </div>
                                 <div class="form-group">
                                     <label for="recipient-email" class="col-form-label">Email</label>
-                                    <input type="email" class="form-control" placeholder=" " name="Email" id="recipient-email" required="">
+                                    <input type="email" class="form-control" placeholder=" " name="Email" id="recipient-email" required="" pattern="[a-z]+[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="Invalid Email Address!!!">
+                                </div>
+                                <div class="form-group">
+                                    <label for="recipient-email" class="col-form-label">Contact No</label>
+                                    <input type="text" class="form-control" placeholder=" " name="Contact" id="recipient-contact" pattern="[6789][0-9]{9}" title="minimum,maximum 10 digit" required="required">
                                 </div>
                                 <div class="form-group">
                                     <label for="password1" class="col-form-label">Password</label>
@@ -788,12 +792,14 @@ if(typeof _bsa !== 'undefined' && _bsa) {
                                     <label for="password2" class="col-form-label">Confirm Password</label>
                                     <input type="password" class="form-control" placeholder=" " name="Confirm_Password" id="password2" required="">
                                 </div>
+
                                 <div class="sub-w3l">
                                     <div class="sub-agile">
-                                        <input type="checkbox" id="brand2" value="">
+                                        <input type="checkbox" id="brand2" value="" required>
                                         <label for="brand2" class="mb-3">
                                             <span></span>I Accept to the Terms & Conditions</label>
                                     </div>
+
                                 </div>
                                 <div class="right-w3l">
                                     <input type="submit" class="form-control" value="Register">
@@ -849,11 +855,11 @@ if(typeof _bsa !== 'undefined' && _bsa) {
                                 {% endif %}
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">Your Email</label>
-                                    <input type="email" class="form-control" placeholder=" " name="Email" id="recipient-name" required="">
+                                    <input type="email" class="form-control" placeholder=" " name="Email" id="recipient-name" required="" pattern="[a-z]+[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="Invalid Email Address!!!">
                                 </div>
                                 <div class="form-group">
                                     <label class="col-form-label">Password</label>
-                                    <input type="password" class="form-control" placeholder=" " name="Password" required="">
+                                    <input type="password" class="form-control" placeholder=" " name="Password" required="" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" >
                                 </div>
                                 <div class="right-w3l">
                                     <input type="submit" class="form-control" value="Login">
@@ -1032,6 +1038,26 @@ if(typeof _bsa !== 'undefined' && _bsa) {
     </script>
     <!-- //end-smooth-scrolling -->
     <!-- smooth-scrolling-of-move-up -->
+    <script>
+
+  function checkForm(form)
+  {
+    ...
+    if(!form.terms.checked) {
+      alert("Please indicate that you accept the Terms and Conditions");
+      form.terms.focus();
+      return false;
+    }
+    return true;
+  }
+
+</script>
+
+<form ... onsubmit="return checkForm(this);">
+...
+<p><input type="checkbox" name="terms"> I accept the <u>Terms and Conditions</u></p>
+<p><input type="submit"></p>
+</form>
     <script>
         $(document).ready(function () {
             /*

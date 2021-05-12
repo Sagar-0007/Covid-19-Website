@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template import RequestContext
-from django.contrib.auth.hashers import make_password,check_password
+from adminservice.models import *
 from random import *
 from django.core.mail import send_mail
 from user.models import *
@@ -9,6 +9,9 @@ from django.http import HttpResponse
 from django.contrib import messages
 import hashlib
 from django.contrib.sessions.models import Session
+from .render_report import  RenderReport
+from django.views.generic import View
+
 
 
 def index(request):
@@ -29,8 +32,13 @@ def signup(request):
     if request.POST:
         username = request.POST['username']
         email = request.POST['email']
-        password = request.POST['password']
-        conformpassword=request.POST['conformpassword']
+        pw = request.POST['password']
+        pwd = hashlib.md5(pw.encode())
+        password = pwd.hexdigest()
+        print('password :', password)
+        cpw = request.POST['conformpassword']
+        cpwd = hashlib.md5(cpw.encode())
+        conformpassword = cpwd.hexdigest()
 
         if password == conformpassword:
             if User.objects.filter(email=email).exists():
@@ -48,11 +56,9 @@ def other_login(request):
         return redirect('index')
     if request.POST:
         email = request.POST['email']
-        password = request.POST['password']
-        is_exist = User.objects.filter(email=email)
-        if is_exist:
-            Userr = User.objects.get(email=email)
-            print(check_password(password, Userr.password))
+        pw = request.POST['password']
+        pwd = hashlib.md5(pw.encode())
+        password = pwd.hexdigest()
 
         id = User.objects.filter(email=email,password=password).values_list('id')
 
@@ -80,20 +86,30 @@ def getmail(request):
     return render(request,'getemail.html')
 
 
+'''
 def forgotpass(request,id):
-    print('get id :',id)
-    if request.POST:
-        newpassword = request.POST['newpassword']
-        conformpassword = request.POST['conformpassword']
-        if newpassword == conformpassword:
-            print('Equal :',id,newpassword)
-            User.objects.filter(id=id).update(password=newpassword)
-            return redirect('other_login')
+    if request.method == "POST":
+        email = request.POST['email']
+        is_already_created = User.objects.filter(email=email)
+        if is_already_created:
+            otp = randint(100000, 999999)
+            print("OTP IS")
+            print(otp)
+            subject = 'Otp verification'
+            message = f"Your Is {otp}"
+            from_email = 'ssgadoya@gmail.com'
+            to_email = [email]
+            send_mail(subject, message, from_email, to_email)
+            print("Configuration Mail Send")
+
+            return render(request, 'admin_otp.html', {'otp': otp, 'email': email})
         else:
-            messages.error(request,'Password And ConformPassword Should Be Same!')
-
-    return render(request,'forgotpassword.html',{'id':id})
-
+            msg1 = "Email Is Not Registed"
+            return render(request, 'forgot_password.html', {'email': email, 'msg': msg1})
+    else:
+        print("error")
+        return render(request, 'forgot_password.html')
+'''
 
 def admin_show(request, id):
     # email = request.session['email']
@@ -110,19 +126,20 @@ def admin_update_profile(request,id):
     if request.method == 'POST':
         name = request.POST['name']
         email = request.POST['email']
-        contact = request.POST['contact']
-        speciality = request.POST['speciality']
 
-        User.objects.filter(id=id).update(name=name, email=email, contact=contact, speciality=speciality)
+        User.objects.filter(id=id).update(username=name, email=email)
         messages.success(request,"Profile updated Successfully")
 
-        return redirect('admin_home')
-
+        return redirect('index')
 
 def chnage_password(request):
     id = request.session.get('user_id')
     print(id)
     if request.method == 'POST':
+        o = request.POST['cpwd']
+        ol = hashlib.md5(o.encode())
+        old = ol.hexdigest()
+
         pw = request.POST['password']
         pwd = hashlib.md5(pw.encode())
         password = pwd.hexdigest()
@@ -131,12 +148,17 @@ def chnage_password(request):
         cpwd = hashlib.md5(cpw.encode())
         conf_password = cpwd.hexdigest()
 
-        if password == conf_password:
+        #user = User.objects.filter(id=id)
+        #check = user.check_password(current, user.password)
+        #print(check)
+
+        if User.objects.filter(password = old):
             User.objects.filter(id=id).update(password=password)
             messages.success(request,"Password Updated successfully")
             return redirect('index')
         else:
-            messages.error(request, "Password and confirm password should be same")
+            msg =  "Old Password doesn't Match !!!"
+            return render(request, 'change_password.html', {'msg': msg})
 
     return render(request, 'change_password.html')
 
@@ -145,7 +167,7 @@ def chnage_password(request):
 def forgotpass(request):
     if request.method == "POST":
         email = request.POST['email']
-        is_already_created = User_register.objects.filter(email=email)
+        is_already_created = User.objects.filter(email=email)
         if is_already_created:
             otp = randint(100000, 999999)
             print("OTP IS")
@@ -337,7 +359,10 @@ def deleteprodut(request,id):
     form.delete()
     return redirect('allproduct')
 
-
+def delete_order(request,id):
+    order = Order.objects.get(id=id)
+    order.delete()
+    return redirect('all_order')
 
 def offer(request):
     prod = Product.objects.all
@@ -391,6 +416,11 @@ def updateoffer(request,id):
 
     return redirect('alloffer')
 
+def deleteoffer(request,id):
+    form = Offer.objects.get(id=id)
+    form.delete()
+    return redirect('alloffer')
+
 def all_order(request):
     order_product = Order.objects.all()
     print('order_product :', order_product)
@@ -405,10 +435,7 @@ def user_view(request,id):
     user = Order.objects.get(id=id)
     return render(request,'order_view.html',{'user':user})
 
-def deleteoffer(request,id):
-    form = Offer.objects.get(id=id)
-    form.delete()
-    return redirect('alloffer')
+
 
 def user_feedback(request):
     user = Contact.objects.all()
@@ -424,3 +451,38 @@ def delete_feedback(request,id):
     user.delete()
     return redirect('product_feedback')
 
+def user_report(request):
+    user = User_register.objects.all()
+    return render(request,'user_report.html',{'user':user})
+
+
+class Pdf(View):
+
+    def get(self, request):
+        user = User_register.objects.all()
+        today = timezone.now()
+        params = {
+            'today': today,
+            'user': user,
+            'request': request
+        }
+        return RenderReport.render_report('pdf.html', params)
+
+
+def order_report(request):
+    user = Order.objects.all()
+    #print('order_product :', order_product)
+    return render(request,'order_report.html',{'user':user})
+
+
+class PdfOrder(View):
+
+    def get(self, request):
+        user = Order.objects.all()
+        today = timezone.now()
+        params = {
+            'today': today,
+            'user': user,
+            'request': request
+        }
+        return RenderReport.render_report('order_pdf.html', params)

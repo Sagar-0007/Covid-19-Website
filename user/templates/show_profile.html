@@ -52,21 +52,16 @@
                         <div class="col-md-6">
                             <form action="show_profile" method="post">
                                 {% csrf_token %}
-                                {% if msg %}
-                                <script>
-                                    Swal.fire(
-                                    '',
-                                    '{{msg}}',
-                                    'success',
-                                    )
-                                </script>
-                                {% endif %}
+
                                 {% for i in user%}
                                 <div class="form-group">
                                     <h4 style="color:black; font-family:Times New Roman, Times, serif;">Name : <b>{{i.username}}</b></h4>
                                 </div>
                                 <div class="form-group">
                                     <h4 style="color:black; font-family:Times New Roman, Times, serif;">Email : <b>{{i.email}}</b></h4>
+                                </div>
+                                <div class="form-group">
+                                    <h4 style="color:black; font-family:Times New Roman, Times, serif;">Contact : <b>{{i.user_contact}}</b></h4>
                                 </div>
                                 {% endfor %}
                                 <div class="right-w3l">
@@ -77,6 +72,7 @@
                                     <h4 style="background-color:pink;"><a style="text-align:center;" class="form-control" href="{% url 'editProfile' %}">Edit Profile</a></h4>
                                 </div>
                                 <br>
+
 
                             </form>
                             <!--<p class="text-center mt-3">Already a member?

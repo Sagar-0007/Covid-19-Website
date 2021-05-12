@@ -136,31 +136,31 @@ if(typeof _bsa !== 'undefined' && _bsa) {
                                             <div class="card_number_grid_left">
                                                 <div class="controls">
                                                     <label class="control-label">Address:</label>
-                                                    <input class="form-control" type="text" name="address" placeholder="Flat,House no,Building,Company,Apartment">
+                                                    <input class="form-control" type="text" name="address" required placeholder="Flat,House no,Building,Company,Apartment">
                                                 </div>
                                             </div>
                                             <div class="card_number_grid_left">
                                                 <div class="controls">
                                                     <label class="control-label">City:</label>
-                                                    <input class="form-control" type="text" name="city" placeholder="Colony,street,Sector,Village">
+                                                    <input class="form-control" type="text" name="city" required placeholder="City">
                                                 </div>
                                             </div>
                                             <div class="card_number_grid_right">
                                                 <div class="controls">
                                                     <label class="control-label">State: </label>
-                                                    <input class="form-control" type="text" name="state" placeholder="Landmark">
+                                                    <input class="form-control" type="text" name="state" required placeholder="State">
                                                 </div>
                                             </div>
                                             <div class="card_number_grid_left">
                                                 <div class="controls">
                                                     <label class="control-label">PIN code:</label>
-                                                    <input class="form-control" type="text" name="pincode" placeholder="PIN code">
+                                                    <input class="form-control" type="text" name="pincode" required placeholder="PIN code">
                                                 </div>
                                             </div>
                                             <div class="card_number_grid_left">
                                                 <div class="controls">
                                                     <label class="control-label">Mobile number:</label>
-                                                    <input class="form-control" type="text" name="mobile" placeholder="Mobile number">
+                                                    <input class="form-control" type="text" name="mobile" value="{{user.user_contact}}" placeholder="Mobile number">
                                                 </div>
                                             </div>
                                             <div class="card_number_grid_left">
@@ -188,7 +188,8 @@ if(typeof _bsa !== 'undefined' && _bsa) {
           data-key="rzp_test_DoGs52oAjmnP1r"
           data-amount="{% widthratio total 1 100 %}"
           data-currency="INR" data-order_id="{{payment.id}}"
-          data-description="Covid-19 Products"
+                  data-image="{% static 'images/logo.jpg' %}"
+          data-description="Covid-19 Safety Products"
           data-prefill.name="{{user.username}}"
           data-prefill.email="{{user.email}}"
           data-theme.color="#528FF0"

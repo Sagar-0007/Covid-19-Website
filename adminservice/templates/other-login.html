@@ -60,12 +60,12 @@
 						<div class="module-body">
 							<div class="control-group">
 								<div class="controls row-fluid">
-									<input class="span12" type="text" id="inputEmail" name="email" placeholder="Email">
+									<input class="span12" type="text" id="inputEmail" name="email" placeholder="Email" pattern="[a-z]+[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="Invalid email address" >
 								</div>
 							</div>
 							<div class="control-group">
 								<div class="controls row-fluid">
-									<input class="span12" type="password" id="inputPassword" name="password" placeholder="Password">
+									<input class="span12" type="password" id="inputPassword" name="password" placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter,one symbol from @#$% and at least 8 or more characters" >
 								</div>
 							</div>
 						</div>

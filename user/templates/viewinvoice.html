@@ -102,25 +102,17 @@
                 <td class="text-center">{{i.quantity}}</td>
                 <td class="text-right">{{i.price}}Rs.</td>
               </tr>
+
+
+
+
+             <tr>
+                <td colspan="2" class="bg-light-2 text-right"><strong>Sub Total</strong></td>
+
+              <td colspan="2" class="bg-light-2 text-right">Rs.{{i.price}}<br></td>
+
+              </tr>
               {% endfor %}
-              <tr>
-
-
-              <tr>
-              <td colspan="2" class="bg-light-2 text-right"><strong>Sub Total</strong></td>
-
-              <td colspan="2" class="bg-light-2 text-right">Rs.{{order.price}}<br></td>
-
-              </tr>
-              <tr>
-                <td colspan="2" class="bg-light-2 text-right"><strong>Delivery charge:</strong><br>
-                  <span class="text-1">delivery</span></td>
-                <td colspan="2" class="bg-light-2 text-right">Rs.+40.0 </td>
-              </tr>
-              <tr>
-                <td colspan="2" class="bg-light-2 text-right"><strong>Total</strong></td>
-                <td colspan="2" class="bg-light-2 text-right">Rs.{{total}} </td>
-              </tr>
 
             </tbody>
           </table>
@@ -141,11 +133,12 @@
           <tr>
             {% for i in order %}
             {% if forloop.first %}
-            <td class="text-center">{{i.Datetime_of_payment}}22</td>
+            <td class="text-center">{{i.Datetime_of_payment}}</td>
             {% endif %}
-            {% endfor %}
+
             <td class="text-center">Razor Pay</td>
-            <td class="text-center">{{total}} INR</td>
+            <td class="text-center">{{i.price}} INR  </td>
+            {% endfor %}
           </tr>
         </tbody>
 
